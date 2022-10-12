@@ -11,29 +11,31 @@ public class Slots_CraftingTable : Slots
         slotType = SlotType.Crafting;
     }
 
-    public bool Add(Item _item)
-    {
-        Debug.Log(slotName + " Add()");
-        for (int i = 0; i < slots.Length; i++)
-        {
-            if (!slots[i].hasItem)
-            {
-                slots[i].Change(_item);
-                return true;
-            }
-        }
-        return false;
-    }
+    //public bool Add(Item _item)
+    //{
+    //    Debug.Log(slotName + " Add()");
+    //    for (int i = 0; i < slots.Length; i++)
+    //    {
+    //        if (!slots[i].hasItem)
+    //        {
+    //            slots[i].Add(_item);
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //}
+
     public bool Crafting(int _num)
     {
         Debug.Log(slotName + " Crafting()");
         if (slots[_num].hasItem)
         {
-            foreach (var item in slots[_num].item.connectingNeedItem)
-                item.Destroy();
+            foreach (int item in slots[_num].item.connectingNeedItemSlot)
+                inven.slots[item].Remove();
 
-            inven.Add(slots[_num].item);
-            slots[_num].Change(new Item());
+            inven.AddItem(slots[_num].item);
+            slots[_num].Remove();
+
             return true;
         }
         
@@ -42,9 +44,9 @@ public class Slots_CraftingTable : Slots
     public bool Clear()
     {
         Debug.Log(slotName + " Clear()");
-        for (int i = 0; i < slots.Length; i++)
+        foreach (Slot slot in slots)
         {
-            slots[i].item.Destroy();
+            slot.Remove();
         }
         return true;
     }

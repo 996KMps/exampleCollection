@@ -36,7 +36,7 @@ public class Item
     public string[] needItems;
 
     //소모할 재료 연결
-    public List<Item> connectingNeedItem = new List<Item>();
+    public List<int> connectingNeedItemSlot = new List<int>();
 
     //사용
     public bool Use()

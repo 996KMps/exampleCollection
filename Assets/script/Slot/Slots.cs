@@ -14,6 +14,31 @@ public class Slots : MonoBehaviour
         LoadSlots();
     }
 
+    public bool AddItem(Item _item)
+    {
+        foreach (var slot in slots)
+        {
+            if (!slot.hasItem)
+            {
+                slot.Add(_item);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool RemoveItem(int _num)
+    {
+        foreach (var slot in slots)
+        {
+            if (slot.slotNum == _num)
+            {
+                slot.Remove();
+                return true;
+            }
+        }
+        return false;
+    }
     public bool LoadSlots()
     {
         Debug.Log(slotName + " LoadSlots()");

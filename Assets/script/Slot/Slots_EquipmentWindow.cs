@@ -25,7 +25,7 @@ public class Slots_EquipmentWindow : Slots
         {
             Item tempItem = slots[0].item;
             slots[0].item = _Item;
-            inven.Add(tempItem);
+            inven.AddItem(tempItem);
             return true;
         }
         return false;
@@ -42,7 +42,7 @@ public class Slots_EquipmentWindow : Slots
         {
             Item tempItem = slots[1].item;
             slots[1].item = _Item;
-            inven.Add(tempItem);
+            inven.AddItem(tempItem);
             return true;
         }
         return false;
