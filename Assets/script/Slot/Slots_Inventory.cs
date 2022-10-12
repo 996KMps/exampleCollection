@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
+using static UnityEditor.Timeline.Actions.MenuPriority;
 
 public class Slots_Inventory : Slots
 {
@@ -100,20 +102,15 @@ public class Slots_Inventory : Slots
             {
                 for (int j = 0; j < slots[i].item.hightTierItems.Length; j++)
                 {
-                    foreach (Item item in ItemDataBase.instance.itemDB)
+                    for (int k = 0; k < ItemDataBase.instance.itemDB.Count; k++)
                     {
-                        if (item.name == slots[i].item.hightTierItems[j])
+                        if (ItemDataBase.instance.itemDB[k].name == slots[i].item.hightTierItems[j])
                         {
-                            list.Add(item.name);
+                            list.Add(ItemDataBase.instance.itemDB[k].name);
                         }
                     }
                 }
             }
-        }
-        //요소 체크
-        foreach (var item in list)
-        {
-            Debug.Log("first sort : " + item);
         }
 
         Debug.Log("인벤토리 안 아이템들의 상위아이템 이름을 리스트에 넣기 완료");
@@ -124,30 +121,18 @@ public class Slots_Inventory : Slots
 
         Debug.Log("중복된 이름 걸러내기 완료");
 
-        //요소 체크
-        foreach (var item in distlist)
-        {
-            Debug.Log("second sort : " + item);
-        }
-
         //걸러낸 리스트를 이용해서 상위 아이템의 정보들을 담기
         List<Item> highTierItems = new();
 
-        foreach (string item in distlist)
+        for (int i = 0; i < distlist.Count; i++)
         {
-            foreach (var dbItem in ItemDataBase.instance.itemDB)
+            for (int j = 0; j < ItemDataBase.instance.itemDB.Count; j++)
             {
-                if (dbItem.name == item)
+                if (ItemDataBase.instance.itemDB[j].name == distlist[i])
                 {
-                    highTierItems.Add(dbItem);
+                    highTierItems.Add(ItemDataBase.instance.itemDB[j]);
                 }
             }
-        }
-
-        //체크
-        foreach (var item in highTierItems)
-        {
-            Debug.Log("Third sort : " + item.name);
         }
 
         Debug.Log("걸러낸 리스트를 이용해서 상위 아이템의 정보들을 담기 완료");
@@ -155,78 +140,49 @@ public class Slots_Inventory : Slots
         //재료를 충족할 시에 리스트에 넣어줌
         List<Item> distHighTier = new();
 
-        foreach (Item item in highTierItems)
+        for (int i = 0; i < highTierItems.Count; i++)
         {
-            item.connectingNeedItemSlot.Clear();
             List<bool> isFills = new();
-            isFills.Clear();
+            highTierItems[i].connectingNeedItemSlot.Clear();
 
-            for (int i = 0; i < item.needItems.Length; i++)
+            for (int j = 0; j < highTierItems[i].needItems.Length; j++)
             {
-                Debug.Log("needItem.Length : " + item.needItems.Length + ", loop " + (i + 1));
                 bool isFill = false;
 
-                for (int j = 0; j < slots.Length; j++)
+                for (int k = 0; k < slots.Length; k++)
                 {
-                    Debug.Log("slots.Length: " + slots.Length + ", loop " + (j + 1));
-                    //Debug.Log("equal? : " + item.needItems[i] + " == " + slots[j].item.name);
-                    if (item.needItems[i] == slots[j].item.name)
+                    if (highTierItems[i].needItems[j] == slots[k].item.name)
                     {
-                        Debug.Log("equal? : " + item.needItems[i] + " == " + slots[j].item.name);
-                        item.connectingNeedItemSlot.Add(slots[j].slotNum);
+                        highTierItems[i].connectingNeedItemSlot.Add(slots[k].slotNum);
                         isFill = true;
                         break;
                     }
                 }
-                //foreach (Slot invenItem in slots)
-                //{
-                //    Debug.Log("equal? : " + item.needItems[i] + " == " + invenItem.item.name);
-                //    if (item.needItems[i] == invenItem.item.name)
-                //    {
-                //        item.connectingNeedItemSlot.Add(invenItem.slotNum);
-                //        isFill = true;
-                //        break;
-                //    }
-                //}
 
                 isFills.Add(isFill);
             }
 
-            foreach (var items in highTierItems)
-            {
-                Debug.Log("len" + items.connectingNeedItemSlot.Count);
-            }
-
             bool fillCheck = true;
 
-            foreach (var _fill in isFills)
+            for (int j = 0; j < isFills.Count; j++)
             {
-                Debug.Log("fillCheck : " + fillCheck);
-                fillCheck = fillCheck&&_fill;
+                fillCheck = fillCheck && isFills[j];
             }
-
-            Debug.Log("fillCheck : " + fillCheck);
 
             if (fillCheck)
             {
-                distHighTier.Add(item);
+                distHighTier.Add(highTierItems[i]);
             }
         }
 
         Debug.Log("충족한 아이템 리스트에 담기 완료");
 
-        //요소 확인
-        foreach (var item in distHighTier)
-        {
-            Debug.Log("fourth sort : " + item.name);
-        }
-
         //넣기 전에 초기화 한번
         craftingTable.Clear();
         //넣기
-        foreach (var item in distHighTier)
+        for (int i = 0; i < distHighTier.Count; i++)
         {
-            craftingTable.AddItem(item);
+            craftingTable.AddItem(distHighTier[i]);
         }
 
         Debug.Log("넣기 전에 초기화 한번, 넣기 완료");
