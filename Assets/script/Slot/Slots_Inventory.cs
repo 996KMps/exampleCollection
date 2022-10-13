@@ -52,6 +52,7 @@ public class Slots_Inventory : Slots
         }
         return true;
     }
+
     public bool Swap(int _num1, int _num2)
     {
         Debug.Log(slotName + " Swap()");
@@ -66,6 +67,7 @@ public class Slots_Inventory : Slots
         slots[_num2].Add(tempItem);
         return true;
     }
+
     public bool ItemUse(int _slotNum)
     {
         Debug.Log(slotName + " ItemUse()");
@@ -88,10 +90,9 @@ public class Slots_Inventory : Slots
         }
         return false;
     }
+
     public bool CheckHighTier()
     {
-        Debug.Log(slotName + " CheckHighTier()");
-
         //제작여부 상관없이 인벤토리 내 모든 아이템의 상위 아이템을 담아놓을 리스트
         List<string> itemList = new();
         //list에서 중복된 요소를 제거한 리스트
@@ -101,7 +102,7 @@ public class Slots_Inventory : Slots
         //제작가능한 아이템 정보를 넣어줄 리스트
         List<Item> craftableList = new();
 
-        //list에 상위아이템 이름 넣기
+        //itemList에 상위아이템들 이름 넣기
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item.hightTierItems == null)
@@ -112,77 +113,67 @@ public class Slots_Inventory : Slots
                 for (int k = 0; k < ItemDataBase.instance.itemDB.Count; k++)
                 {
                     if (ItemDataBase.instance.itemDB[k].name == slots[i].item.hightTierItems[j])
-                    {
                         itemList.Add(ItemDataBase.instance.itemDB[k].name);
-                    }
                 }
             }
         }
 
-        //중복 걸러내기
+        //중복된 이름 걸러내기
         distList = itemList.Distinct().ToList();
 
-        //highTierItems에 아이템 정보 찾아서 넣기
+        //distList로 아이템 정보 찾아서 ItemInfo에 넣기
         for (int i = 0; i < distList.Count; i++)
         {
             for (int j = 0; j < ItemDataBase.instance.itemDB.Count; j++)
             {
-                if (ItemDataBase.instance.itemDB[j].name == distList[i])
-                {
-                    ItemInfo.Add(ItemDataBase.instance.itemDB[j]);
-                    break;
-                }
+                if (ItemDataBase.instance.itemDB[j].name != distList[i])
+                    continue;
+
+                ItemInfo.Add(ItemDataBase.instance.itemDB[j]);
+                break;
             }
         }
 
-        //distHighTier
+        //필요한 재료가 전부 있으면 재료를 등록하고 craftableList에 담기
         for (int i = 0; i < ItemInfo.Count; i++)
         {
-            List<bool> isFills = new();
+            List<bool> hasItem = new();
             ItemInfo[i].connectingNeedItemSlot.Clear();
 
+            //재료 아이템이 있는지 확인
             for (int j = 0; j < ItemInfo[i].needItems.Length; j++)
             {
-                bool isFill = false;
+                bool check = false;
 
                 for (int k = 0; k < slots.Length; k++)
                 {
-                    if (ItemInfo[i].needItems[j] == slots[k].item.name)
-                    {
-                        ItemInfo[i].connectingNeedItemSlot.Add(slots[k].slotNum);
-                        isFill = true;
-                        break;
-                    }
+                    if (ItemInfo[i].needItems[j] != slots[k].item.name)
+                        continue;
+
+                    ItemInfo[i].connectingNeedItemSlot.Add(slots[k].slotNum);
+                    check = true;
+                    break;
                 }
 
-                isFills.Add(isFill);
+                hasItem.Add(check);
             }
 
-            bool fillCheck = true;
+            bool itemCheck = true;
 
-            for (int j = 0; j < isFills.Count; j++)
-            {
-                fillCheck = fillCheck && isFills[j];
-            }
+            //hasItem이 전부 true일때만 itemCheck의 true가 유지됨
+            for (int j = 0; j < hasItem.Count; j++)
+                itemCheck = itemCheck && hasItem[j];
 
-            if (fillCheck)
-            {
+            if (itemCheck)
                 craftableList.Add(ItemInfo[i]);
-            }
         }
 
-        Debug.Log("충족한 아이템 리스트에 담기 완료");
-
-        //넣기 전에 초기화 한번
+        //제작칸 초기화
         craftingTable.Clear();
 
         //넣기
         for (int i = 0; i < craftableList.Count; i++)
-        {
             craftingTable.AddItem(craftableList[i]);
-        }
-
-        Debug.Log("넣기 전에 초기화 한번, 넣기 완료");
 
         return true;
     }
