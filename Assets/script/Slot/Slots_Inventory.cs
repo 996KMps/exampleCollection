@@ -12,50 +12,52 @@ public class Slots_Inventory : Slots
 
     private void Start()
     {
-        slotType = SlotType.Inventory;
+        invenDel += CheckHighTier;
+        slotType = SlotsType.Inventory;
     }
 
-    public bool AddItem(Item _item)
-    {
-        foreach (var slot in slots)
-        {
-            if (!slot.hasItem)
-            {
-                slot.Add(_item);
-                CheckHighTier();
-                return true;
-            }
-        }
-        return false;
-    }
+    //public bool Add(Item _item)
+    //{
+    //    Add(_item, slotType);
+        //return true;
+        //for (int i = 0; i < slots.Length; i++)
+        //{
+        //    if (slots[i].hasItem)
+        //        continue;
+
+        //    slots[i].Add(_item);
+        //    //CheckHighTier();
+        //    return true;
+        //}
+
+        //return false;
+    //}
 
     public bool RemoveItem(int _num)
     {
-        foreach (var slot in slots)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if (slot.slotNum == _num)
-            {
-                slot.Remove();
-                CheckHighTier();
-                return true;
-            }
+            if (slots[i].slotNum != _num)
+                continue;
+
+            slots[i].Remove();
+            CheckHighTier();
+            return true;
         }
+
         return false;
     }
 
     public bool RemoveAll()
     {
-        Debug.Log(slotName + " RemoveAll()");
-        foreach (Slot slot in slots)
-        {
-            slot.Remove();
-        }
+        for (int i = 0; i < slots.Length; i++)
+            slots[i].Remove();
+
         return true;
     }
 
     public bool Swap(int _num1, int _num2)
     {
-        Debug.Log(slotName + " Swap()");
         Item tempItem;
 
         if (slots[_num1].item == null)
@@ -93,6 +95,7 @@ public class Slots_Inventory : Slots
 
     public bool CheckHighTier()
     {
+        Debug.Log("CheckHighTier start");
         //제작여부 상관없이 인벤토리 내 모든 아이템의 상위 아이템을 담아놓을 리스트
         List<string> itemList = new();
         //list에서 중복된 요소를 제거한 리스트
@@ -138,6 +141,7 @@ public class Slots_Inventory : Slots
         for (int i = 0; i < ItemInfo.Count; i++)
         {
             List<bool> hasItem = new();
+            Debug.Log("hasItem Count : " + hasItem.Count);
             ItemInfo[i].connectingNeedItemSlot.Clear();
 
             //재료 아이템이 있는지 확인
@@ -169,11 +173,11 @@ public class Slots_Inventory : Slots
         }
 
         //제작칸 초기화
-        craftingTable.Clear();
+        craftingTable.SlotClear();
 
         //넣기
         for (int i = 0; i < craftableList.Count; i++)
-            craftingTable.AddItem(craftableList[i]);
+            craftingTable.Add(craftableList[i], craftingTable.slotType);
 
         return true;
     }

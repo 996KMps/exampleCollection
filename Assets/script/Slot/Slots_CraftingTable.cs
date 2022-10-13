@@ -8,22 +8,8 @@ public class Slots_CraftingTable : Slots
 
     private void Start()
     {
-        slotType = SlotType.Crafting;
+        slotType = SlotsType.Craft;
     }
-
-    //public bool Add(Item _item)
-    //{
-    //    Debug.Log(slotName + " Add()");
-    //    for (int i = 0; i < slots.Length; i++)
-    //    {
-    //        if (!slots[i].hasItem)
-    //        {
-    //            slots[i].Add(_item);
-    //            return true;
-    //        }
-    //    }
-    //    return false;
-    //}
 
     public bool Crafting(int _num)
     {
@@ -33,21 +19,12 @@ public class Slots_CraftingTable : Slots
             foreach (int item in slots[_num].item.connectingNeedItemSlot)
                 inven.slots[item].Remove();
 
-            inven.AddItem(slots[_num].item);
+            inven.Add(slots[_num].item, inven.slotType);
             slots[_num].Remove();
 
             return true;
         }
-        
+
         return false;
-    }
-    public bool Clear()
-    {
-        Debug.Log(slotName + " Clear()");
-        foreach (Slot slot in slots)
-        {
-            slot.Remove();
-        }
-        return true;
     }
 }

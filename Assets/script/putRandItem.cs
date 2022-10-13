@@ -8,7 +8,7 @@ public class putRandItem : MonoBehaviour
     public Slots_CraftingTable craft;
     public void clickAdd()
     {
-        inven.AddItem(ItemDataBase.instance.itemDB[Random.Range(0, 2)]);
+        inven.Add(ItemDataBase.instance.itemDB[Random.Range(0, 2)], inven.slotType);
     }
     public void clickCraft()
     {

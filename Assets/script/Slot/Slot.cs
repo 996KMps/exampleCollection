@@ -4,13 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum SlotType
-{
-    Equipment,
-    Inventory,
-    Crafting,
-    ETC,
-}
+
 [System.Serializable]
 public class Slot : MonoBehaviour
 {
@@ -23,63 +17,48 @@ public class Slot : MonoBehaviour
     public bool Add(Item _item)
     {
         item = _item;
+        item.amount++;
         hasItem = true;
         SlotDataUpdate();
-        return false;
+        return true;
     }
 
     public bool Remove()
     {
-        item = new Item();
-        SlotDataUpdate();
-        return false;
-    }
-
-    //안쓸거임
-    public bool Change(Item _item)
-    {
-        Debug.Log("SlotNum " + slotNum + " : Change()");
-        item = _item;
-        hasItem = true;
+        item = new();
         SlotDataUpdate();
         return true;
     }
 
     public bool SlotDataUpdate()
     {
-        //업데이트 확인
-        Debug.Log(transform.parent.name + " " + slotNum + "slot update");
+        if (!hasItem)
+            return false;
+        icon.sprite = item.img;
+        amount.text = item.amount.ToString();
 
-        if (hasItem)
+        switch (item.type)  
         {
-            Debug.Log("SlotNum " + slotNum + " : SlotDataUpdate()");
-            switch (item.type)  
-            {
-                case ItemType.Weapon:
-                    icon.sprite = item.img;
-                    amount.text = item.amount.ToString();
-                    break;
-                case ItemType.Protector:
-                    icon.sprite = item.img;
-                    amount.text = item.amount.ToString();
-                    break;
-                case ItemType.Consumable:
-                    icon.sprite = item.img;
-                    amount.text = item.amount.ToString();
-                    break;
-                case ItemType.ETC:
-                    icon.sprite = item.img;
-                    amount.text = item.amount.ToString();
-                    break;
-                case ItemType.NULL:
-                    icon.sprite = null;
-                    amount.text = null;
-                    hasItem = false;
-                    break;
-                default:
-                    break;
-            }
+
+            case ItemType.Weapon:
+                
+                return true;
+
+            case ItemType.Protector:
+                return true;
+
+            case ItemType.Consumable:
+                return true;
+
+            case ItemType.ETC:
+                return true;
+
+            case ItemType.NULL:
+                hasItem = false;
+                return true;
+
+            default:
+                return false;
         }
-        return false;
     }
 }

@@ -10,7 +10,7 @@ public class Slots_EquipmentWindow : Slots
 
     private void Start()
     {
-        slotType = SlotType.Equipment;
+        slotType = SlotsType.Equipment;
     }
 
     public bool EquipWeapon(Item _Item)
@@ -25,7 +25,7 @@ public class Slots_EquipmentWindow : Slots
         {
             Item tempItem = slots[0].item;
             slots[0].item = _Item;
-            inven.AddItem(tempItem);
+            inven.Add(tempItem, inven.slotType);
             return true;
         }
         return false;
@@ -42,7 +42,7 @@ public class Slots_EquipmentWindow : Slots
         {
             Item tempItem = slots[1].item;
             slots[1].item = _Item;
-            inven.AddItem(tempItem);
+            inven.Add(tempItem, inven.slotType);
             return true;
         }
         return false;

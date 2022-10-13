@@ -36,7 +36,7 @@ public class Item
     public string[] needItems;
 
     //소모할 재료 연결
-    public List<int> connectingNeedItemSlot = new List<int>();
+    public List<int> connectingNeedItemSlot = new();
 
     //사용
     public bool Use()
@@ -58,22 +58,33 @@ public class Item
     //버리기
     public bool Dump()
     {
-        Debug.Log(name + " : Dump()");
+        if (amount > 1)
+        {
+            amount--;
+            //DUMP TODO
+            return true;
+        }
+        if (amount == 1)
+        {
+            Destroy();
+            return true;
+        }
         return false;
     }
 
     //하나 파괴
     public bool Destroy()
     {
-        Debug.Log(name + " : Destroy()");
-        type = ItemType.NULL;
-        img = null;
-        return true;
-    }
-    //전부 파괴
-    public bool DestroyAll()
-    {
-        Debug.Log(name + " : DestroyAll()");
-        return true;
+        if (amount > 1)
+        {
+            amount--;
+            return true;
+        }
+        if (amount == 1)
+        {
+            //DESTROY TODO
+            return true;
+        }
+        return false;
     }
 }
