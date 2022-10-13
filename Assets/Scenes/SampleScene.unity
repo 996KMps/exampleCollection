@@ -602,12 +602,14 @@ MonoBehaviour:
   - type: 3
     name: bat
     img: {fileID: 21300000, guid: 7bb85476c3601fe43a97459bf693a624, type: 3}
-    efts: []
+    efts:
+    - {fileID: 11400000, guid: 67b8da3f0b1e357439e04459c7ebe04a, type: 2}
+    - {fileID: 11400000, guid: 67b8da3f0b1e357439e04459c7ebe04a, type: 2}
     amount: 0
     hightTierItems:
     - elec
     needItems: []
-    connectingNeedItem: []
+    connectingNeedItemSlot: 
   - type: 3
     name: piano
     img: {fileID: 21300000, guid: 5f4d79475f91e134e953493d06f3ab46, type: 3}
@@ -616,7 +618,7 @@ MonoBehaviour:
     hightTierItems:
     - elec
     needItems: []
-    connectingNeedItem: []
+    connectingNeedItemSlot: 
   - type: 3
     name: elec
     img: {fileID: 21300000, guid: b2eacbe74c9a09b41b31c1ccf1259ea6, type: 3}
@@ -626,7 +628,7 @@ MonoBehaviour:
     needItems:
     - bat
     - piano
-    connectingNeedItem: []
+    connectingNeedItemSlot: 
   - type: 3
     name: ston
     img: {fileID: 21300000, guid: eed4c3be3a006fb45bed7ec0449414a8, type: 3}
@@ -635,7 +637,7 @@ MonoBehaviour:
     hightTierItems:
     - dust
     needItems: []
-    connectingNeedItem: []
+    connectingNeedItemSlot: 
   - type: 3
     name: chok
     img: {fileID: 21300000, guid: 6bdc028dbc9898e48863e57c00074a9e, type: 3}
@@ -644,7 +646,7 @@ MonoBehaviour:
     hightTierItems:
     - dust
     needItems: []
-    connectingNeedItem: []
+    connectingNeedItemSlot: 
   - type: 3
     name: dust
     img: {fileID: 21300000, guid: 2a95bccd7b61a004f817dc0f98ff646f, type: 3}
@@ -654,7 +656,7 @@ MonoBehaviour:
     needItems:
     - ston
     - chok
-    connectingNeedItem: []
+    connectingNeedItemSlot: 
 --- !u!4 &208110466
 Transform:
   m_ObjectHideFlags: 0

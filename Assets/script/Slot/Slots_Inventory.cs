@@ -40,7 +40,7 @@ public class Slots_Inventory : Slots
             if (slots[i].slotNum != _num)
                 continue;
 
-            slots[i].Remove();
+            slots[i].RemoveItem();
             CheckHighTier();
             return true;
         }
@@ -51,7 +51,7 @@ public class Slots_Inventory : Slots
     public bool RemoveAll()
     {
         for (int i = 0; i < slots.Length; i++)
-            slots[i].Remove();
+            slots[i].RemoveItem();
 
         return true;
     }
@@ -65,8 +65,8 @@ public class Slots_Inventory : Slots
         else
             tempItem = slots[_num1].item;
 
-        slots[_num1].Add(slots[_num2].item);
-        slots[_num2].Add(tempItem);
+        slots[_num1].AddItem(slots[_num2].item);
+        slots[_num2].AddItem(tempItem);
         return true;
     }
 
@@ -108,7 +108,7 @@ public class Slots_Inventory : Slots
         //itemList에 상위아이템들 이름 넣기
         for (int i = 0; i < slots.Length; i++)
         {
-            if (slots[i].item.hightTierItems == null)
+            if (slots[i].item == null || slots[i].item.hightTierItems == null)
                 continue;
             
             for (int j = 0; j < slots[i].item.hightTierItems.Length; j++)
@@ -132,7 +132,7 @@ public class Slots_Inventory : Slots
                 if (ItemDataBase.instance.itemDB[j].name != distList[i])
                     continue;
 
-                ItemInfo.Add(ItemDataBase.instance.itemDB[j]);
+                ItemInfo.Add(ItemDataBase.instance.GetItem(j));
                 break;
             }
         }
@@ -151,7 +151,7 @@ public class Slots_Inventory : Slots
 
                 for (int k = 0; k < slots.Length; k++)
                 {
-                    if (ItemInfo[i].needItems[j] != slots[k].item.name)
+                    if (slots[k].item == null || ItemInfo[i].needItems[j] != slots[k].item.name)
                         continue;
 
                     ItemInfo[i].connectingNeedItemSlot.Add(slots[k].slotNum);

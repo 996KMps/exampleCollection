@@ -15,7 +15,7 @@ public enum ItemType
 public class Item
 {
     //타입
-    public ItemType type = ItemType.NULL;
+    public ItemType type;
 
     //이름
     public string name;

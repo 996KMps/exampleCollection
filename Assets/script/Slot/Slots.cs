@@ -8,7 +8,7 @@ public enum SlotsType
 {
     Equipment,
     Inventory,
-    Craft,
+    CraftingTable,
     ETC,
 }
 
@@ -34,22 +34,9 @@ public class Slots : MonoBehaviour
             if (slots[i].hasItem)
                 continue;
 
-            slots[i].Add(_item);
+            slots[i].AddItem(_item);
 
-            switch (_type)
-            {
-                case SlotsType.Equipment:
-                    break;
-                case SlotsType.Inventory:
-                    invenDel();
-                    break;
-                case SlotsType.Craft:
-                    break;
-                case SlotsType.ETC:
-                    break;
-                default:
-                    break;
-            }
+            OnDelForSlotsType(_type);
 
             return true;
         }
@@ -57,14 +44,17 @@ public class Slots : MonoBehaviour
         return false;
     }
 
-    public bool Remove(int _num)
+    public bool Remove(int _num, SlotsType _type)
     {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].slotNum != _num)
                 continue;
 
-            slots[i].Remove();
+            slots[i].RemoveItem();
+
+            OnDelForSlotsType(_type);
+
             return true;
         }
 
@@ -74,7 +64,7 @@ public class Slots : MonoBehaviour
     public bool SlotClear()
     {
         for (int i = 0; i < slots.Length; i++)
-            slots[i].Remove();
+            slots[i].RemoveItem();
 
         return true;
     }
@@ -90,6 +80,25 @@ public class Slots : MonoBehaviour
             }
             return true;
         }
+        return false;
+    }
+    public bool OnDelForSlotsType(SlotsType _type)
+    {
+        switch (_type)
+        {
+            case SlotsType.Equipment:
+                return true;
+            case SlotsType.Inventory:
+                invenDel();
+                return true;
+            case SlotsType.CraftingTable:
+                return true;
+            case SlotsType.ETC:
+                return true;
+            default:
+                break;
+        }
+
         return false;
     }
 }

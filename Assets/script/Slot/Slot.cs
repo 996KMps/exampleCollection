@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 
 [System.Serializable]
@@ -14,26 +17,31 @@ public class Slot : MonoBehaviour
     public Image icon;
     public TextMeshProUGUI amount;
 
-    public bool Add(Item _item)
+    public bool AddItem(Item _item)
     {
-        item = _item;
-        item.amount++;
         hasItem = true;
+        item = _item;
         SlotDataUpdate();
         return true;
     }
 
-    public bool Remove()
+    public bool RemoveItem()
     {
-        item = new();
+        hasItem = false;
+        item = null;
         SlotDataUpdate();
         return true;
     }
 
     public bool SlotDataUpdate()
     {
-        if (!hasItem)
-            return false;
+        if (item == null)
+        {
+            icon.sprite = null;
+            amount.text = null;
+            return true;
+        }
+
         icon.sprite = item.img;
         amount.text = item.amount.ToString();
 

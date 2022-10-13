@@ -8,7 +8,7 @@ public class Slots_CraftingTable : Slots
 
     private void Start()
     {
-        slotType = SlotsType.Craft;
+        slotType = SlotsType.CraftingTable;
     }
 
     public bool Crafting(int _num)
@@ -17,10 +17,10 @@ public class Slots_CraftingTable : Slots
         if (slots[_num].hasItem)
         {
             foreach (int item in slots[_num].item.connectingNeedItemSlot)
-                inven.slots[item].Remove();
+                inven.slots[item].RemoveItem();
 
             inven.Add(slots[_num].item, inven.slotType);
-            slots[_num].Remove();
+            slots[_num].RemoveItem();
 
             return true;
         }
