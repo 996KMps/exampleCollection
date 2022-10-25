@@ -20,7 +20,6 @@ public class Slots_CraftingTable : Slots
                 inven.slots[item].RemoveItem();
 
             inven.Add(slots[_num].item, inven.slotType);
-            slots[_num].RemoveItem();
 
             return true;
         }

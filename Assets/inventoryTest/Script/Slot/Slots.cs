@@ -36,7 +36,7 @@ public class Slots : MonoBehaviour
 
             slots[i].AddItem(_item);
 
-            OnDelForSlotsType(_type);
+            OnDeleForSlotsType(_type);
 
             return true;
         }
@@ -53,7 +53,7 @@ public class Slots : MonoBehaviour
 
             slots[i].RemoveItem();
 
-            OnDelForSlotsType(_type);
+            OnDeleForSlotsType(_type);
 
             return true;
         }
@@ -82,7 +82,7 @@ public class Slots : MonoBehaviour
         }
         return false;
     }
-    public bool OnDelForSlotsType(SlotsType _type)
+    public bool OnDeleForSlotsType(SlotsType _type)
     {
         switch (_type)
         {
