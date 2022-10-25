@@ -5,7 +5,7 @@ using UnityEngine;
 public class testGetItem : MonoBehaviour
 {
     [SerializeField]
-    Inventory inven;
+    GomDolInventory inven;
     [SerializeField]
     GameObject[] slot;
 
